@@ -5,17 +5,17 @@ $APPLICATION->SetTitle("Регистрация");
 
 <div class="container">
 	<div class="row">
-	<?$APPLICATION->IncludeComponent(
-		"my:register",
-		"",
-		Array(
-			"AUTH" => "Y",
-			"REQUIRED_FIELDS" => array("EMAIL","NAME"),
-			"SET_TITLE" => "Y",
-			"SHOW_FIELDS" => array("EMAIL","NAME"),
-			"USE_BACKURL" => "Y"
-		)
-	);?>
+		<?$APPLICATION->IncludeComponent(
+			"my:register",
+			"",
+			Array(
+				"AUTH" => "Y",
+				"REQUIRED_FIELDS" => array("EMAIL","NAME"),
+				"SET_TITLE" => "Y",
+				"SHOW_FIELDS" => array("EMAIL","NAME"),
+				"USE_BACKURL" => "Y"
+			)
+		);?>
 	</div>
 </div>
 
