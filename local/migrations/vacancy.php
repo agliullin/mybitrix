@@ -8,6 +8,11 @@ if ($is_console === false) {
 /* Time limit */
 @set_time_limit(0);
 
+define('NO_KEEP_STATISTIC', true);
+define('NOT_CHECK_PERMISSIONS', true);
+define('CHK_EVENT', true);
+define("NO_AGENT_CHECK", true);
+
 /* Подключение prolog_before */
 $_SERVER["DOCUMENT_ROOT"] = realpath(__DIR__ . '/../../');
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
@@ -15,7 +20,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 /* Подключение модуля */
 CModule::IncludeModule("iblock");
 
-/* Функция для вывода группы по коду*/
+/* Функция для вывода группы по коду */
 function GetGroupByCode ($code) {
    $rsGroups = CGroup::GetList ($by = "c_sort", $order = "asc", Array ("STRING_ID" => $code));
    return $rsGroups->Fetch();
@@ -47,21 +52,23 @@ $arFields = Array(
 	'IN_RSS'=>'N',
 	'SORT'=>10,
 	'LANG'=>Array(
-			'ru'=>Array(
-				'NAME'=>'Работодатели',
-				'SECTION_NAME'=>'Разделы',
-				'ELEMENT_NAME'=>'Работодатель'
-			),
-			'en'=>Array(
-				'NAME'=>'Employers',
-				'SECTION_NAME'=>'Sections',
-				'ELEMENT_NAME'=>'Employer'
-			)
+		'ru'=>Array(
+			'NAME'=>'Работодатели',
+			'SECTION_NAME'=>'Разделы',
+			'ELEMENT_NAME'=>'Работодатель'
+		),
+		'en'=>Array(
+			'NAME'=>'Employers',
+			'SECTION_NAME'=>'Sections',
+			'ELEMENT_NAME'=>'Employer'
 		)
-    );
+	)
+);
 	
 $obBlocktype = CIBlockType::GetByID('employer');
-if ($obBlocktype === false) {
+
+$obBlocktypeArray = $obBlocktype->Fetch();
+if (count($obBlocktypeArray["arResult"]) == 0) {
 	$obBlocktype = new CIBlockType;
 	$DB->StartTransaction();
 	$res = $obBlocktype->Add($arFields);
@@ -103,7 +110,9 @@ $arFields = Array(
 		)
     );
 	
-if ($obBlocktype = CIBlockType::GetByID('vacancy') === false) {
+$obBlocktype = CIBlockType::GetByID('vacancy');
+$obBlocktypeArray = $obBlocktype->Fetch();
+if (count($obBlocktypeArray["arResult"]) == 0) {
 	$obBlocktype = new CIBlockType;
 	$DB->StartTransaction();
 	$res = $obBlocktype->Add($arFields);
@@ -125,10 +134,53 @@ if ($obBlocktype = CIBlockType::GetByID('vacancy') === false) {
 	}
 }
 
+/* Создание/обновление типа ИБ "Отклики" */
+$arFields = Array(
+	'ID'=>'response',
+	'SECTIONS'=>'Y',
+	'IN_RSS'=>'N',
+	'SORT'=>10,
+	'LANG'=>Array(
+		'ru'=>Array(
+			'NAME'=>'Отклики',
+			'SECTION_NAME'=>'Разделы',
+			'ELEMENT_NAME'=>'Отклик'
+		),
+		'en'=>Array(
+			'NAME'=>'Responses',
+			'SECTION_NAME'=>'Sections',
+			'ELEMENT_NAME'=>'Response'
+		)
+	)
+);
+	
+$obBlocktype = CIBlockType::GetByID('response');
+$obBlocktypeArray = $obBlocktype->Fetch();
+if (count($obBlocktypeArray["arResult"]) == 0) {
+	$obBlocktype = new CIBlockType;
+	$DB->StartTransaction();
+	$res = $obBlocktype->Add($arFields);
+	if(!$res) {
+		$DB->Rollback();
+		echo $obBlocktype->LAST_ERROR.'<br>';
+	} else {
+		$DB->Commit();
+	}
+} else {
+	$obBlocktype = new CIBlockType;
+	$DB->StartTransaction();
+	$res = $obBlocktype->Update('response', $arFields);
+	if(!$res) {
+		$DB->Rollback();
+		echo $obBlocktype->LAST_ERROR.'<br>';
+	} else {
+		$DB->Commit();
+	}
+}
+
 
 /* Создание/обновление ИБ "Работодатели" */
 $ID = 0;
-$ib = new CIBlock;
 $arFields = Array(
 	"ACTIVE" => "Y",
 	"NAME" => "Работодатели",
@@ -140,14 +192,11 @@ $arFields = Array(
 	"DESCRIPTION_TYPE" => "text",
 	"GROUP_ID" => Array("1"=>"D", "2"=>"R", $Group_Vacancy_Adm_ID=>"W")
 );
-if ($ID > 0) {
-	$res = $ib->Update($ID, $arFields);
-} else {
-	$ID = $ib->Add($arFields);
-	if($ID === false){
-		echo $ib->LAST_ERROR.'<br>';
-	}
-	$res = ($ID > 0);
+
+$ib = new CIBlock;
+$ID = $ib->Add($arFields);
+if($ID === false){
+	echo $ib->LAST_ERROR.'<br>';
 }
 
 $ibp = new CIBlockProperty;
@@ -196,7 +245,6 @@ $EmployerIBID = $ID;
 
 /* Создание/обновление ИБ "Вакансии" */
 $ID = 0;
-$ib = new CIBlock;
 $arFields = Array(
 	"ACTIVE" => "Y",
 	"NAME" => "Вакансии",
@@ -208,16 +256,11 @@ $arFields = Array(
 	"DESCRIPTION_TYPE" => "text",
 	"GROUP_ID" => Array("1"=>"D", "2"=>"R", $Group_Vacancy_Adm_ID=>"W")
 );
-if ($ID > 0) {
-	$res = $ib->Update($ID, $arFields);
-} else {
-	{
-		$ID = $ib->Add($arFields);
-		if($ID === false){
-			echo 'Error: '.$ib->LAST_ERROR.'<br>';
-		}
-		$res = ($ID>0);
-	}
+
+$ib = new CIBlock;
+$ID = $ib->Add($arFields);
+if($ID === false){
+	echo 'Error: '.$ib->LAST_ERROR.'<br>';
 }
 
 $ibp = new CIBlockProperty;
@@ -270,7 +313,6 @@ $arFields = Array(
 	"SORT" => "10",
 	"CODE" => "salary_from",
 	"PROPERTY_TYPE" => "N",
-	"USER_TYPE" => "Sequence",
 	"IBLOCK_ID" => $ID,
 );
 $PropID = $ibp->Add($arFields);
@@ -294,4 +336,118 @@ $arFields = Array(
 	"IBLOCK_ID" => $ID,
 );
 $PropID = $ibp->Add($arFields);
+
+$VacancyIBID = $ID;
+
+/* Создание/обновление ИБ "Отклики" */
+$ID = 0;
+$arFields = Array(
+	"ACTIVE" => "Y",
+	"NAME" => "Отклики",
+	"CODE" => "responses",
+	"IBLOCK_TYPE_ID" => "response",
+	"SITE_ID" => "s1",
+	"SORT" => 10,
+	"DESCRIPTION" => "Отклики",
+	"DESCRIPTION_TYPE" => "text",
+	"GROUP_ID" => Array("1"=>"D", "2"=>"R", $Group_Vacancy_Adm_ID=>"W")
+);
+
+$ID = $ib->Add($arFields);
+if($ID === false){
+	echo $ib->LAST_ERROR.'<br>';
+}
+
+$ibp = new CIBlockProperty;
+
+$arFields = Array(
+	"NAME" => "ID вакансии",
+	"ACTIVE" => "Y",
+	"SORT" => "10",
+	"CODE" => "id_vacancy",
+	"PROPERTY_TYPE" => "S", 
+	"IBLOCK_ID" => $ID,
+);
+$PropID = $ibp->Add($arFields);
+
+$arFields = Array(
+	"NAME" => "ID пользователя",
+	"ACTIVE" => "Y",
+	"SORT" => "10",
+	"CODE" => "id_user",
+	"PROPERTY_TYPE" => "S",
+	"IBLOCK_ID" => $ID,
+);
+$PropID = $ibp->Add($arFields);
+
+$arFields = Array(
+	"NAME" => "ID работодатель",
+	"ACTIVE" => "Y",
+	"SORT" => "10",
+	"CODE" => "id_employer",
+	"PROPERTY_TYPE" => "S", 
+	"IBLOCK_ID" => $ID,
+);
+$PropID = $ibp->Add($arFields);
+
+$arFields = Array(
+	"NAME" => "Сообщение",
+	"ACTIVE" => "Y",
+	"SORT" => "10",
+	"CODE" => "message",
+	"PROPERTY_TYPE" => "S",
+	"IBLOCK_ID" => $ID,
+);
+$PropID = $ibp->Add($arFields);
+
+$arFields = Array(
+	"NAME" => "Зарплата от",
+	"ACTIVE" => "Y",
+	"SORT" => "10",
+	"CODE" => "salary_from",
+	"PROPERTY_TYPE" => "S",
+	"IBLOCK_ID" => $ID,
+);
+$PropID = $ibp->Add($arFields);
+
+$arFields = Array(
+	"NAME" => "Зарплата до",
+	"ACTIVE" => "Y",
+	"SORT" => "10",
+	"CODE" => "salary_up_to",
+	"PROPERTY_TYPE" => "S",
+	"IBLOCK_ID" => $ID,
+);
+$PropID = $ibp->Add($arFields);
+
+
+
+$ob = new CUserTypeEntity();
+    $arFields = array(
+    'ENTITY_ID' => 'USER',
+    'FIELD_NAME' => 'UF_EMPLOYER',
+    'USER_TYPE_ID' => 'string',
+    'XML_ID' => '',
+    'SORT' => 100,
+    'MULTIPLE' => 'N',
+    'MANDATORY' => 'N',
+    'SHOW_FILTER' => 'I',
+    'SHOW_IN_LIST' => 'Y',
+    'EDIT_IN_LIST' => 'Y',
+    'IS_SEARCHABLE' => 'N',
+	'EDIT_FORM_LABEL'   => array(
+        'ru'    => 'ID работодателя',
+        'en'    => 'ID employer',
+    ),
+    'LIST_COLUMN_LABEL' => array(
+        'ru'    => 'ID работодателя',
+        'en'    => 'ID employer',
+    ),
+    'LIST_FILTER_LABEL' => array(
+        'ru'    => 'ID работодателя',
+		'en'    => 'ID employer',
+	),
+);
+$FIELD_ID = $ob->Add($arFields);
+
 ?>
