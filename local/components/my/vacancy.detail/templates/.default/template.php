@@ -3,9 +3,8 @@
 $array = array(
 	"id_user" => $USER->GetID(),
 	"id_vacancy" => $arResult["ITEM"]["ID"],
-	"id_employer" => $arResult["ITEM"]["PROPERTIES"]["employer"]["ID"]
+	"id_employer" => $arResult["ITEM"]["PROPERTIES"]["employer"]["DETAIL"]["ID"]
 );
-
 ?>
 <script>
 $(function() {
