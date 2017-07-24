@@ -23,15 +23,6 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 
 		$iblock_id = 22;
 		$section_id = false;
-
-		
-		ob_start();
-		var_dump($_POST);
-		$a = ob_get_clean();
-		$fp = fopen("test.txt", "a");
-		$mytext = "\n" . $a;
-		$test = fwrite($fp, $mytext);
-		fclose($fp);
 		
 		$arFields = Array(
 			"NAME" => "Отклик пользователя с ID " . $_POST['id_user'] . " на вакансию с ID " . $_POST['id_vacancy'],

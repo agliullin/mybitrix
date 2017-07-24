@@ -1,6 +1,6 @@
 <?require_once($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");?>
 <?
-function rus2translit($string)
+function RussianWordsToTranslit($string)
 {
 	$converter = array(
 		'а' => 'a',	'б' => 'b',	'в' => 'v',
@@ -38,7 +38,7 @@ function rus2translit($string)
 			$arFile = $rsFile->Fetch();
 			$fName = $arFile["ORIGINAL_NAME"];
 			
-			$fName=rus2translit($fName);
+			$fName=RussianWordsToTranslit($fName);
 			
 			$c_Type=$arFile["CONTENT_TYPE"];
 			
@@ -49,13 +49,11 @@ function rus2translit($string)
 			 	echo "Ошибка: файл не найден.";
 			else
 			{
-				// Set headers
 				header("Cache-Control: public");
 				header("Content-Description: File Transfer");
 				header("Content-Disposition: attachment; filename=".$fName);
 				header("Content-Type: $c_Type");
 				header("Content-Transfer-Encoding: binary");
-				// Read the file from disk
 				ob_clean();
 				flush();
 				echo file_get_contents($file);
