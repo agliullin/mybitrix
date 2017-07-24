@@ -22,7 +22,12 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)
 		<input type="text" class="form-control" name="NAME" placeholder="Имя" />
       </div>
     </div>
-	
+	<div class="form-group">
+      <label for="inputLastName" class="col-lg-2 control-label">Фамилия</label>
+      <div class="col-lg-10">
+		<input type="text" class="form-control" name="LAST_NAME" placeholder="Имя" />
+      </div>
+    </div>
     <div class="form-group">
       <label for="inputLogin" class="col-lg-2 control-label">Логин</label>
       <div class="col-lg-10">

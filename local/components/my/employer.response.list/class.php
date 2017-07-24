@@ -34,7 +34,6 @@ class VList extends CBitrixComponent
 			
 			$this->arResult["ITEMS"][] = $Item;
             $this->arResult["ELEMENTS"][] = $Item["ID"];
-			$this->arResult["FOR_EMPLOYER"] = $this->arParams["FOR_EMPLOYER"];
 		}
 		$this->arResult["NAV_STRING"] = $Responses->GetPageNavStringEx(
             $navComponentObject,

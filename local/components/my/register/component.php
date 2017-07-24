@@ -5,6 +5,7 @@ global $USER;
 if (!empty($_POST)) {
 	$arRequestParams = array(
 		"NAME",
+		"LAST_NAME",
 		"EMAIL",
 		"LOGIN",
 		"PASSWORD"
