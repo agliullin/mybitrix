@@ -1,19 +1,17 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle(" ");
-?>
-<div class="container">
+?><div class="container">
 	<div class="row">
 		<div class="col-md-3">
 			<?$APPLICATION->IncludeComponent(
-				"my:auth", 
-				".default", 
-				array(
-					"REGISTER_URL" => "reg.php",
-					"COMPONENT_TEMPLATE" => ".default"
-				),
-				false
-			);?>
+	"my:auth",
+	".default",
+	Array(
+		"COMPONENT_TEMPLATE" => ".default",
+		"REGISTER_URL" => "reg.php"
+	)
+);?>
 		</div>
 		<div class="col-md-9">
 			<?$APPLICATION->IncludeComponent(
@@ -45,8 +43,7 @@ $APPLICATION->SetTitle(" ");
 					"LIST_PAGE_URL" => "/vacancy/",
 				),
 				false
-			);?>
+			);?
 		</div>
 	</div>
-</div>
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+</div><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>

@@ -420,8 +420,6 @@ $arFields = Array(
 );
 $PropID = $ibp->Add($arFields);
 
-
-
 $ob = new CUserTypeEntity();
     $arFields = array(
     'ENTITY_ID' => 'USER',
