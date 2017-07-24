@@ -11,7 +11,6 @@
 		<p><b>Почта</b>: <?=$arResult["ITEM"]["RESPONSE_USER"]["EMAIL"]?></p>
 		<p><b>Желаемая зарплата</b>: <?=$arResult["ITEM"]["PROPERTIES"]["salary_from"]["VALUE"]?> - <?=$arResult["ITEM"]["PROPERTIES"]["salary_up_to"]["VALUE"]?></p>
         <p><b>Сопроводительное письмо</b>: <?=$arResult["ITEM"]["PROPERTIES"]["message"]["VALUE"]?></p>
-        <p><?=$arResult["ITEM"]["PROPERTIES"]["employer"]["NAME"]?>: <?=$arResult["ITEM"]["PROPERTIES"]["employer"]["DETAIL"]["NAME"]?></p>
 		
 	</div>
 </div>
