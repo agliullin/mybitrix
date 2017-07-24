@@ -1,7 +1,8 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle(" ");
-?><div class="container">
+?>
+<div class="container">
 	<div class="row">
 		<div class="col-md-3">
 			 <?$APPLICATION->IncludeComponent(
@@ -41,6 +42,7 @@ $APPLICATION->SetTitle(" ");
 		),
 		"DETAIL_PAGE_URL" => "/vacancy/#ELEMENT_ID#/",
         "LIST_PAGE_URL" => "/vacancy/",
+		"FOR_EMPLOYER" => "N",
 	),
 	false
 );?>
