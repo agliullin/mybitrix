@@ -5,13 +5,13 @@ $APPLICATION->SetTitle(" ");
 	<div class="row">
 		<div class="col-md-3">
 			<?$APPLICATION->IncludeComponent(
-	"my:auth",
-	".default",
-	Array(
-		"COMPONENT_TEMPLATE" => ".default",
-		"REGISTER_URL" => "reg.php"
-	)
-);?>
+				"my:auth",
+				".default",
+				Array(
+					"COMPONENT_TEMPLATE" => ".default",
+					"REGISTER_URL" => "reg.php"
+				)
+			);?>
 		</div>
 		<div class="col-md-9">
 			<?$APPLICATION->IncludeComponent(
@@ -43,7 +43,7 @@ $APPLICATION->SetTitle(" ");
 					"LIST_PAGE_URL" => "/vacancy/",
 				),
 				false
-			);?
+			);?>
 		</div>
 	</div>
 </div><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
