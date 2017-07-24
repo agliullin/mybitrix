@@ -15,8 +15,8 @@ class VAgent {
 					"ACTIVE" => "N",
 				);
 				$UpdateVacancy = new CIBlockElement();
-                $UpdateVacancyID = $Item["ID"];
-                $UpdateVacancy->Update($UpdateVacancyID, $Fields);
+				$UpdateVacancyID = $Item["ID"];
+				$UpdateVacancy->Update($UpdateVacancyID, $Fields);
 			}
 		}
 	}
