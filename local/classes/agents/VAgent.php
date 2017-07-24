@@ -47,17 +47,4 @@ class VAgent {
 		return $FilterParams;
 	}
 }
-
-function log_array() {
-   $arArgs = func_get_args();
-   $sResult = '';
-   foreach($arArgs as $arArg) {
-      $sResult .= "\n\n".print_r($arArg, true);
-   }
-
-   if(!defined('LOG_FILENAME')) {
-      define('LOG_FILENAME', $_SERVER['DOCUMENT_ROOT'].'/bitrix/log.txt');
-   }
-   AddMessage2Log($sResult, 'log_array -> ');
-}
 ?>

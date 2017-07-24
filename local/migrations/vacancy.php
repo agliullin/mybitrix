@@ -420,4 +420,32 @@ $arFields = Array(
 );
 $PropID = $ibp->Add($arFields);
 
+$ob = new CUserTypeEntity();
+    $arFields = array(
+    'ENTITY_ID' => 'USER',
+    'FIELD_NAME' => 'UF_EMPLOYER',
+    'USER_TYPE_ID' => 'string',
+    'XML_ID' => '',
+    'SORT' => 100,
+    'MULTIPLE' => 'N',
+    'MANDATORY' => 'N',
+    'SHOW_FILTER' => 'I',
+    'SHOW_IN_LIST' => 'Y',
+    'EDIT_IN_LIST' => 'Y',
+    'IS_SEARCHABLE' => 'N',
+	'EDIT_FORM_LABEL'   => array(
+        'ru'    => 'ID работодателя',
+        'en'    => 'ID employer',
+    ),
+    'LIST_COLUMN_LABEL' => array(
+        'ru'    => 'ID работодателя',
+        'en'    => 'ID employer',
+    ),
+    'LIST_FILTER_LABEL' => array(
+        'ru'    => 'ID работодателя',
+		'en'    => 'ID employer',
+	),
+);
+$FIELD_ID = $ob->Add($arFields);
+
 ?>

@@ -7,7 +7,6 @@ class VList extends CBitrixComponent
     public function executeComponent()
     {
 		CModule::IncludeModule("iblock");
-		
 		$NavParams = VList::SetNavParams();
 		
 		$SelectParams = VList::SetSelectParams();
@@ -20,8 +19,15 @@ class VList extends CBitrixComponent
 		$Vacancies->SetUrlTemplates($this->arParams["DETAIL_PAGE_URL"], "", $this->arParams["LIST_PAGE_URL"]);
 		while($Vacancy = $Vacancies->GetNextElement()) {
 			$Item = $Vacancy->GetFields();
+			$ResponseFilterCount = array("PROPERTY_ID_VACANCY" => $Item["ID"]);
+			$ResponseSelectCount = array("PROPERTY_ID_VACANCY", "PROPERTY_ID_USER", "PROPERTY_ID_EMPLOYER");
+			$ResponseCount = CIBlockElement::GetList(array(),$ResponseFilterCount,array(),false,$ResponseSelectCount);
+			$Item["RESPONSE_COUNT"] = $ResponseCount;
+			
+			
 			$this->arResult["ITEMS"][] = $Item;
             $this->arResult["ELEMENTS"][] = $Item["ID"];
+			$this->arResult["FOR_EMPLOYER"] = $this->arParams["FOR_EMPLOYER"];
 		}
 		$this->arResult["NAV_STRING"] = $Vacancies->GetPageNavStringEx(
             $navComponentObject,
@@ -45,6 +51,7 @@ class VList extends CBitrixComponent
 			"ID", 
 			"IBLOCK_ID",
 			"NAME",
+			"ACTIVE",
 			"PROPERTY_TASK",
 		));
 		return $SelectParams;
@@ -59,11 +66,24 @@ class VList extends CBitrixComponent
 	}
 	
 	public function SetFilterParams() {
-		$FilterParams = array (
-			"IBLOCK_TYPE" => $this->arParams["IBLOCK_TYPE"],
-			"IBLOCK_ID" => $this->arParams["IBLOCK_ID"],
-			"ACTIVE" => "Y",
-		);
+		if ($this->arParams["FOR_EMPLOYER"] == "Y") {
+			global $USER;
+			$arFilter = array("ID" => $USER->GetID());
+			$arParams["SELECT"] = array("UF_EMPLOYER");
+			$arRes = CUser::GetList($by,$order,$arFilter,$arParams);
+			$arRes = $arRes->Fetch();
+			$FilterParams = array (
+				"IBLOCK_TYPE" => $this->arParams["IBLOCK_TYPE"],
+				"IBLOCK_ID" => $this->arParams["IBLOCK_ID"],
+				"PROPERTY_EMPLOYER" => $arRes["UF_EMPLOYER"]
+			);
+		} else {
+			$FilterParams = array (
+				"IBLOCK_TYPE" => $this->arParams["IBLOCK_TYPE"],
+				"IBLOCK_ID" => $this->arParams["IBLOCK_ID"],
+				"ACTIVE" => "Y",
+			);
+		}
 		return $FilterParams;
 	}
 }

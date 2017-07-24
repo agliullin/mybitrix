@@ -47,15 +47,23 @@ else:
   </div>
   <div class="panel-body">
 	<form class="form-horizontal" method="POST">
-		  <fieldset>
-			
-			<h5><?=$arResult["NAME"]?> [<?=$arResult["LOGIN"]?>]</h5><br />
+		<fieldset>
+			<?=$arResult["NAME"]?><br />
+			<?php 
+				echo "Логин: " . $arResult["LOGIN"] . "<br>";
+				echo "Почта: " . $arResult["EMAIL"] . "<br>";
+				if ($arResult["UF_EMPLOYER"] == NULL) {
+					echo "Группа: Пользователь<br><br>";
+				} else {
+					echo "Группа: Работодатель (" . $arResult["UF_EMPLOYER"]["NAME"] . ")<br><br>";
+				}
+			?>
 			<div class="form-group">
-			  <div class="col-lg-10">
-				<button type="submit" name="LOG_OUT" class="btn btn-default btn-sm">Выйти</button>
-			  </div>
+				<div class="col-lg-10">
+					<button type="submit" name="LOG_OUT" class="btn btn-default btn-sm">Выйти</button>
+				</div>
 			</div>
-		  </fieldset>
+		</fieldset>
 	</form>
   </div>
 </div>

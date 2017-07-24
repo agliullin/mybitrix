@@ -5,14 +5,14 @@ $APPLICATION->SetTitle(" ");
 <div class="container">
 	<div class="row">
 		<div class="col-md-3">
-			 <?$APPLICATION->IncludeComponent(
-	"my:auth",
-	".default",
-	Array(
-		"COMPONENT_TEMPLATE" => ".default",
-		"REGISTER_URL" => "reg.php"
-	)
-);?>
+			<?$APPLICATION->IncludeComponent(
+				"my:auth",
+				".default",
+				Array(
+					"COMPONENT_TEMPLATE" => ".default",
+					"REGISTER_URL" => "reg.php"
+				)
+			);?> 
 		</div>
 		<div class="col-md-9">
 			 <?$APPLICATION->IncludeComponent(
@@ -30,7 +30,7 @@ $APPLICATION->SetTitle(" ");
 			2 => "PROPERTY_SALARY_UP_TO",
 			3 => "PROPERTY_SPECIALIZATION"
 		),
-		"SEF_FOLDER" => "/vacancy/",
+		"SEF_FOLDER" => "../vacancy/",
 		"SEF_MODE" => "Y",
 		"SORT_BY1" => "ACTIVE_FROM",
 		"SORT_BY2" => "NAME",
@@ -40,9 +40,9 @@ $APPLICATION->SetTitle(" ");
 			"list" => "",
 			"detail" => "#ELEMENT_ID#/",
 		),
-		"DETAIL_PAGE_URL" => "/vacancy/#ELEMENT_ID#/",
-        "LIST_PAGE_URL" => "/vacancy/",
-		"FOR_EMPLOYER" => "N",
+		"DETAIL_PAGE_URL" => "../vacancy/#ELEMENT_ID#/",
+        "LIST_PAGE_URL" => "../vacancy/",
+		"FOR_EMPLOYER" => "Y",
 	),
 	false
 );?>
