@@ -8,14 +8,7 @@ $aMenuLinks = Array(
 		"" 
 	),
 	Array(
-		"О сайте", 
-		"about/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Для работодателей", 
+		"Панель администратора вакансий", 
 		"employer/", 
 		Array(), 
 		Array(), 
