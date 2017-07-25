@@ -6,6 +6,19 @@ class VList extends CBitrixComponent
 {
     public function executeComponent()
     {
+		
+		if ($this->arParams["FOR_EMPLOYER"] == "Y") {
+			global $USER;
+			$UserGroups = $USER->GetUserGroupArray();
+			if (in_array(7, $UserGroups)) {
+				$this->arResult["SHOW"] = "Y";
+			} else {
+				$this->arResult["SHOW"] = "N";
+			}
+		} elseif ($this->arParams["FOR_EMPLOYER"] == "N") {
+			$this->arResult["SHOW"] = "Y";
+		}
+		
 		CModule::IncludeModule("iblock");
 		$NavParams = VList::SetNavParams();
 		

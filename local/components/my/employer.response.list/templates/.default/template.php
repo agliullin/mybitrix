@@ -1,13 +1,16 @@
 <?
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)
 	die();
+if ($arResult["SHOW"] == "N") {
+	LocalRedirect('/index.php') ;
+}
 ?>
 <style>
 .response {
 	margin: 5px;
 }
-.response a {
-	font-size: 20px;
+.response .title {
+	font-size: 18px;
 }
 </style>
 <div class="panel panel-primary">
@@ -18,9 +21,9 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)
 		<?foreach($arResult["ITEMS"] as $arItem): { ?>
 			<div class="response row">
 				<p>
-				<a href="<?=$arItem["DETAIL_PAGE_URL"]?>">Отклик пользователя <?=$arItem["RESPONSE_USER"]["NAME"]?> <?=$arItem["RESPONSE_USER"]["LAST_NAME"]?> (<?=$arItem["RESPONSE_USER"]["LOGIN"]?>)</a><br>
+				<a class="title" href="<?=$arItem["DETAIL_PAGE_URL"]?>">Отклик пользователя <?=$arItem["RESPONSE_USER"]["NAME"]?> <?=$arItem["RESPONSE_USER"]["LAST_NAME"]?> (<?=$arItem["RESPONSE_USER"]["LOGIN"]?>)</a><br>
 				<b>Пользователь</b>: <?=$arItem["RESPONSE_USER"]["NAME"]?> <?=$arItem["RESPONSE_USER"]["LAST_NAME"]?></br>
-				<b>Вакансия</b>: <?=$arItem["RESPONSE_VACANCY"]["NAME"]?></br>
+				<b>Вакансия</b>: <a href="../../vacancy/<?=$arItem["RESPONSE_VACANCY"]["ID"]?>/"><?=$arItem["RESPONSE_VACANCY"]["NAME"]?></a></br>
 				<b>Желаемая зарплата</b>: <?=$arItem["PROPERTY_SALARY_FROM_VALUE"]?> - <?=$arItem["PROPERTY_SALARY_UP_TO_VALUE"]?>
 				
 				</p>

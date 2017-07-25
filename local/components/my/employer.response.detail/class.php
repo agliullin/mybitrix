@@ -2,10 +2,17 @@
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) 
 	die();
 
-class VDetail extends CBitrixComponent
+class RDetail extends CBitrixComponent
 {
     public function executeComponent()
     {
+		global $USER;
+		$UserGroups = $USER->GetUserGroupArray();
+		if (in_array(7, $UserGroups)) {
+			$this->arResult["SHOW"] = "Y";
+		} else {
+			$this->arResult["SHOW"] = "N";
+		}
 		CModule::IncludeModule("iblock");
 		
 		$ResponseCIBlockElement = CIBlockElement::GetById($this->arParams["ELEMENT_ID"]);
@@ -24,7 +31,7 @@ class VDetail extends CBitrixComponent
 		$ResponseVacancyElement = $ResponseVacancy->GetNextElement();
 		$ResponseVacancyArray = $ResponseVacancyElement->GetFields();
 		$Item["RESPONSE_VACANCY"] = $ResponseVacancyArray;
-		$FilterParams = VDetail::SetFilterParams();
+		$FilterParams = RDetail::SetFilterParams();
 		
 		$this->arResult["ITEM"] = $Item;
 		$this->IncludeComponentTemplate();
