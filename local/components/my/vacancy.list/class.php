@@ -82,6 +82,12 @@ class VList extends CBitrixComponent
 	public function SetFilterParams() {
 		$FilterParams = array();
 		
+		if (isset($this->arParams["F_ACTIVE"]) && ($this->arParams["F_ACTIVE"] == "Y" || $this->arParams["F_ACTIVE"] == "N")) {
+			$FilterParams = array_merge($FilterParams, array("ACTIVE" => $this->arParams["F_ACTIVE"]));
+		}
+		if (isset($this->arParams["F_RESPONSE"]) && ($this->arParams["F_RESPONSE"] == "Y" || $this->arParams["F_RESPONSE"] == "N")) {
+			$FilterParams = array_merge($FilterParams, array("ACTIVE" => $this->arParams["F_RESPONSE"]));
+		}
 		if (!empty($this->arParams["F_DATE_START"])) {
 			$date_start = new DateTime($this->arParams["F_DATE_START"]);
 			$date_start = date('d.m.Y H:i:s', $date_start->getTimestamp());

@@ -43,10 +43,6 @@ $APPLICATION->SetTitle("Вакансии");
 					"DETAIL_PAGE_URL" => "/vacancy/#ELEMENT_ID#/",
 					"LIST_PAGE_URL" => "/vacancy/",
 					"FOR_EMPLOYER" => "N",
-					"F_ACTIVE" => $_POST["f_active"],
-					"F_RESPONSE" => $_POST["f_response"],
-					"F_DATE_START" => $_POST["f_date_start"],
-					"F_DATE_END" => $_POST["f_date_end"],
 				),
 				false
 			);?>

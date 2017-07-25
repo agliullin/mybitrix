@@ -31,7 +31,7 @@ if ($arResult["SHOW"] == "N") {
 	<div class="panel-body">
 	
 		<?php
-		if ($arResult["SHOW"] == "N") {
+		if ($arResult["SHOW"] == "Y") {
 		?>
 		<div class="well">
 			<h4>Фильтрация</h4>
@@ -40,8 +40,8 @@ if ($arResult["SHOW"] == "N") {
 				<label for="f_active">Активен</label><br>
 				<select name="f_active" class="f_active" />
 					<option value=''>Выберите активность</option>
-					<option <?php if (isset($_POST["f_user"]) && $_POST["f_user"] == "Y") echo "selected"; ?> value='Y'>Активен</option>
-					<option <?php if (isset($_POST["f_user"]) && $_POST["f_user"] == "N") echo "selected"; ?> value='N'>Не активен</option>
+					<option <?php if (isset($_POST["f_active"]) && $_POST["f_active"] == "Y") echo "selected"; ?> value='Y'>Активен</option>
+					<option <?php if (isset($_POST["f_active"]) && $_POST["f_active"] == "N") echo "selected"; ?> value='N'>Не активен</option>
 				</select><br><br>
 				<label for="f_response">Наличие откликов</label><br>
 				<select name="f_response" class="f_response" />
