@@ -2,18 +2,26 @@
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) 
 	die();
 
-class VList extends CBitrixComponent
+class RList extends CBitrixComponent
 {
     public function executeComponent()
     {
+		global $USER;
+		$UserGroups = $USER->GetUserGroupArray();
+		if (in_array(7, $UserGroups)) {
+			$this->arResult["SHOW"] = "Y";
+		} else {
+			$this->arResult["SHOW"] = "N";
+		}
+			
 		CModule::IncludeModule("iblock");
-		$NavParams = VList::SetNavParams();
+		$NavParams = RList::SetNavParams();
 		
-		$SelectParams = VList::SetSelectParams();
+		$SelectParams = RList::SetSelectParams();
 		
-		$OrderParams = VList::SetOrderParams();
+		$OrderParams = RList::SetOrderParams();
 		
-		$FilterParams = VList::SetFilterParams();
+		$FilterParams = RList::SetFilterParams();
 		
 		$Responses = CIBlockElement::GetList($OrderParams, $FilterParams, false, $NavParams, $SelectParams);
 		$Responses->SetUrlTemplates($this->arParams["DETAIL_PAGE_URL"], "", $this->arParams["LIST_PAGE_URL"]);

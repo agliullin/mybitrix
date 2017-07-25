@@ -1,6 +1,10 @@
 <?
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)
 	die();
+
+if ($arResult["SHOW"] == "N") {
+	LocalRedirect('/index.php') ;
+}
 ?>
 <style>
 .active {
@@ -17,7 +21,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)
 	
 }
 .vacancy a {
-	font-size: 20px;
+	font-size: 18px;
 }
 </style>
 <div class="panel panel-primary">
@@ -26,7 +30,7 @@ if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)
 	</div>
 	<div class="panel-body">
 		<?foreach($arResult["ITEMS"] as $arItem): { ?>
-			<div class="vacancy">
+			<div class="vacancy well">
 				<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><?=$arItem["NAME"]?></a><br>
 				<p>
 				<?php
