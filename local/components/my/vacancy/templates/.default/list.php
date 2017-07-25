@@ -18,6 +18,9 @@ $APPLICATION->IncludeComponent(
 		"F_RESPONSE" => $arParams["F_RESPONSE"],
 		"F_DATE_START" => $arParams["F_DATE_START"],
 		"F_DATE_END" => $arParams["F_DATE_END"],
+		"F_EMPLOYER" => $arParams["F_EMPLOYER"],
+		"F_SALARY_START" => $arParams["F_SALARY_START"],
+		"F_SALARY_END" => $arParams["F_SALARY_END"],
     )
 );
 ?>

@@ -36,12 +36,37 @@ class VList extends CBitrixComponent
 			$ResponseSelectCount = array("PROPERTY_ID_VACANCY", "PROPERTY_ID_USER", "PROPERTY_ID_EMPLOYER");
 			$ResponseCount = CIBlockElement::GetList(array(),$ResponseFilterCount,array(),false,$ResponseSelectCount);
 			$Item["RESPONSE_COUNT"] = $ResponseCount;
-			
+			$order = array('id' => 'asc');
+			$EmployerFilter = array(
+				"IBLOCK_TYPE" => "employer",
+				"IBLOCK_ID" => 2,
+				"ID" => $Item["PROPERTY_EMPLOYER_VALUE"]
+			);
+			$EmployerSelect = array(
+				"ID",
+				"NAME"
+			);
+			$EmployerArray = CIBlockElement::GetList($order, $EmployerFilter, false, false, $EmployerSelect);
+			$Item["EMPLOYER_INFO"] = $EmployerArray->GetNext();
 			
 			$this->arResult["ITEMS"][] = $Item;
             $this->arResult["ELEMENTS"][] = $Item["ID"];
-			$this->arResult["FOR_EMPLOYER"] = $this->arParams["FOR_EMPLOYER"];
 		}
+		
+		$this->arResult["FOR_EMPLOYER"] = $this->arParams["FOR_EMPLOYER"];
+		// СПИСОК РАБОТОДАТЕЛЕЙ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА
+		$order = array('id' => 'asc');
+		$EArrayFilter = array(
+			"IBLOCK_TYPE" => "employer",
+			"IBLOCK_ID" => 2,
+		);
+		$EArraySelect = array(
+			"ID",
+			"NAME"
+		);
+		$EArrayForFilter = CIBlockElement::GetList($order, $EArrayFilter, false, false, $EArraySelect);
+		$this->arResult["EArrayForFilter"] = $EArrayForFilter;
+		
 		$this->arResult["NAV_STRING"] = $Vacancies->GetPageNavStringEx(
             $navComponentObject,
             "",
@@ -81,6 +106,16 @@ class VList extends CBitrixComponent
 	
 	public function SetFilterParams() {
 		$FilterParams = array();
+		
+		if (isset($this->arParams["F_EMPLOYER"]) && is_numeric($this->arParams["F_EMPLOYER"])) {
+			$FilterParams = array_merge($FilterParams, array("PROPERTY_EMPLOYER" => $this->arParams["F_EMPLOYER"]));
+		}
+		if (isset($this->arParams["F_SALARY_START"])) {
+			$FilterParams = array_merge($FilterParams, array(">=PROPERTY_SALARY_UP_TO" => $this->arParams["F_SALARY_START"]));
+		}
+		if (isset($this->arParams["F_SALARY_END"])) {
+			$FilterParams = array_merge($FilterParams, array("<=PROPERTY_SALARY_FROM" => $this->arParams["F_SALARY_END"]));
+		}
 		
 		if (isset($this->arParams["F_ACTIVE"]) && ($this->arParams["F_ACTIVE"] == "Y" || $this->arParams["F_ACTIVE"] == "N")) {
 			$FilterParams = array_merge($FilterParams, array("ACTIVE" => $this->arParams["F_ACTIVE"]));
