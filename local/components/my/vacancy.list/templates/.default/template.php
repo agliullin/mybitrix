@@ -29,6 +29,35 @@ if ($arResult["SHOW"] == "N") {
 		<h3 class="panel-title">Вакансии</h3>
 	</div>
 	<div class="panel-body">
+	
+		<?php
+		if ($arResult["SHOW"] == "N") {
+		?>
+		<div class="well">
+			<h4>Фильтрация</h4>
+			<p>
+			<form action="index.php" method="post"> 
+				<label for="f_active">Активен</label><br>
+				<select name="f_active" class="f_active" />
+					<option value=''>Выберите активность</option>
+					<option <?php if (isset($_POST["f_user"]) && $_POST["f_user"] == "Y") echo "selected"; ?> value='Y'>Активен</option>
+					<option <?php if (isset($_POST["f_user"]) && $_POST["f_user"] == "N") echo "selected"; ?> value='N'>Не активен</option>
+				</select><br><br>
+				<label for="f_response">Наличие откликов</label><br>
+				<select name="f_response" class="f_response" />
+					<option value=''>Выберите наличие откликов</option>
+					<option <?php if (isset($_POST["f_response"]) && $_POST["f_response"] == "Y") echo "selected"; ?> value='Y'>С откликами</option>
+					<option <?php if (isset($_POST["f_response"]) && $_POST["f_response"] == "N") echo "selected"; ?> value='N'>Без откликов</option>
+				</select><br><br>
+				<label>Дата создания</label><br>
+				<input type="date" value="<?=$_POST["f_date_start"]?>" name="f_date_start"> - <input type="date" value="<?=$_POST["f_date_end"]?>" name="f_date_end"><br><br>
+				<button class="btn btn-primary" type="submit">Применить</button>
+			</form>
+			</p>
+		</div>
+		<?php 
+		}
+		?>
 		<?foreach($arResult["ITEMS"] as $arItem): { ?>
 			<div class="vacancy well">
 				<a href="<?=$arItem["DETAIL_PAGE_URL"]?>"><?=$arItem["NAME"]?></a><br>
@@ -43,6 +72,7 @@ if ($arResult["SHOW"] == "N") {
 					echo '<div>Количество откликов: ' . $arItem["RESPONSE_COUNT"] .'</div>';
 				}
 				?>
+				<b>Дата создания</b>: <?=$arItem["DATE_CREATE"]?></br>
 				<b>Специализация</b>: <?=$arItem["PROPERTY_SPECIALIZATION_VALUE"]?></br>
 				<b>Зарплата</b>: <?=$arItem["PROPERTY_SALARY_FROM_VALUE"]?> - <?=$arItem["PROPERTY_SALARY_UP_TO_VALUE"]?>
 				</p>

@@ -32,7 +32,7 @@ $APPLICATION->SetTitle(" ");
 		),
 		"SEF_FOLDER" => "../vacancy/",
 		"SEF_MODE" => "Y",
-		"SORT_BY1" => "ACTIVE_FROM",
+		"SORT_BY1" => "DATE_CREATE",
 		"SORT_BY2" => "NAME",
 		"SORT_ORDER1" => "DESC",
 		"SORT_ORDER2" => "ASC",

@@ -65,6 +65,7 @@ class VList extends CBitrixComponent
 			"IBLOCK_ID",
 			"NAME",
 			"ACTIVE",
+			"DATE_CREATE",
 			"PROPERTY_TASK",
 		));
 		return $SelectParams;
@@ -79,23 +80,36 @@ class VList extends CBitrixComponent
 	}
 	
 	public function SetFilterParams() {
+		$FilterParams = array();
+		
+		if (!empty($this->arParams["F_DATE_START"])) {
+			$date_start = new DateTime($this->arParams["F_DATE_START"]);
+			$date_start = date('d.m.Y H:i:s', $date_start->getTimestamp());
+			$FilterParams = array_merge($FilterParams, array(">=DATE_CREATE" => $date_start));
+		}
+		if (!empty($this->arParams["F_DATE_END"])) {
+			$date_end = new DateTime($this->arParams["F_DATE_END"]);
+			$date_end = date('d.m.Y H:i:s', $date_end->getTimestamp());
+			$FilterParams = array_merge($FilterParams, array("<=DATE_CREATE" => $date_end));
+		}
+		
 		if ($this->arParams["FOR_EMPLOYER"] == "Y") {
 			global $USER;
 			$arFilter = array("ID" => $USER->GetID());
 			$arParams["SELECT"] = array("UF_EMPLOYER");
 			$arRes = CUser::GetList($by,$order,$arFilter,$arParams);
 			$arRes = $arRes->Fetch();
-			$FilterParams = array (
+			$FilterParams = array_merge($FilterParams, array (
 				"IBLOCK_TYPE" => $this->arParams["IBLOCK_TYPE"],
 				"IBLOCK_ID" => $this->arParams["IBLOCK_ID"],
 				"PROPERTY_EMPLOYER" => $arRes["UF_EMPLOYER"]
-			);
+			));
 		} else {
-			$FilterParams = array (
+			$FilterParams = array_merge($FilterParams, array (
 				"IBLOCK_TYPE" => $this->arParams["IBLOCK_TYPE"],
 				"IBLOCK_ID" => $this->arParams["IBLOCK_ID"],
 				"ACTIVE" => "Y",
-			);
+			));
 		}
 		return $FilterParams;
 	}

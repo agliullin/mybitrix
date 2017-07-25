@@ -11,6 +11,7 @@ if ($arResult["SHOW"] == "N") {
 	</div>
 	<div class="panel-body">
 		<p><b>Вакансия</b>: <a href="../../../vacancy/<?=$arResult["ITEM"]["RESPONSE_VACANCY"]["ID"]?>/"><?=$arResult["ITEM"]["RESPONSE_VACANCY"]["NAME"]?></a></p>
+		<p><b>Дата отклика</b>: <?=$arResult["ITEM"]["DATE_CREATE"]?></p>
 		<p><b>Имя</b>: <?=$arResult["ITEM"]["RESPONSE_USER"]["NAME"]?></p>
 		<p><b>Фамилия</b>: <?=$arResult["ITEM"]["RESPONSE_USER"]["LAST_NAME"]?></p>
 		<p><b>Почта</b>: <?=$arResult["ITEM"]["RESPONSE_USER"]["EMAIL"]?></p>
