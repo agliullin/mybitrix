@@ -21,12 +21,18 @@ class RList extends CBitrixComponent
 		
 		$OrderParams = RList::SetOrderParams();
 		
-		$FilterParams = RList::SetFilterParams();
+		
+		global $USER;
+		$FilterParams = array("ID" => $USER->GetID());
+		$SelectParams["SELECT"] = array("UF_EMPLOYER");
+		$GetUser = CUser::GetList($by,$order,$FilterParams,$SelectParams);
+		$GetUserArray = $GetUser->Fetch();
+		$FilterParams = RList::SetFilterParams($GetUserArray["UF_EMPLOYER"]);
 		
 		$Responses = CIBlockElement::GetList($OrderParams, $FilterParams, false, $NavParams, $SelectParams);
 		$Responses->SetUrlTemplates($this->arParams["DETAIL_PAGE_URL"], "", $this->arParams["LIST_PAGE_URL"]);
 		
-		while($Response = $Responses->GetNextElement()) {
+		while ($Response = $Responses->GetNextElement()) {
 			$Item = $Response->GetFields();
 			$ResponseUser = CUser::GetByID($Item["PROPERTY_ID_USER_VALUE"]);
 			$ResponseUserArray = $ResponseUser->GetNext();
@@ -43,6 +49,25 @@ class RList extends CBitrixComponent
 			$this->arResult["ITEMS"][] = $Item;
             $this->arResult["ELEMENTS"][] = $Item["ID"];
 		}
+		
+		// СПИСОК ПОЛЬЗОВАТЕЛЕЙ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА
+		$order = array('id' => 'asc');
+		$by = 'sort'; 
+		$UArrayForFilter = CUser::GetList($order, $tmp);
+		$this->arResult["UArrayForFilter"] = $UArrayForFilter;
+		
+		// СПИСОК ВАКАНСИЙ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА
+		$VArrayFilter = array(
+			"PROPERTY_EMPLOYER" => $GetUserArray["UF_EMPLOYER"]
+		);
+		$VArraySelect = array(
+			"ID",
+			"NAME"
+		);
+		$VArrayForFilter = CIBlockElement::GetList($order, $VArrayFilter, false, false, $VArraySelect);
+		$this->arResult["VArrayForFilter"] = $VArrayForFilter;
+		
+		
 		$this->arResult["NAV_STRING"] = $Responses->GetPageNavStringEx(
             $navComponentObject,
             "",
@@ -66,6 +91,7 @@ class RList extends CBitrixComponent
 			"IBLOCK_ID",
 			"NAME",
 			"ACTIVE",
+			"DATE_CREATE",
 			"PROPERTY_ID_USER",
 			"PROPERTY_ID_EMPLOYER",
 			"PROPERTY_ID_VACANCY",
@@ -84,17 +110,30 @@ class RList extends CBitrixComponent
 		return $OrderParams;
 	}
 	
-	public function SetFilterParams() {
-		global $USER;
-		$arFilter = array("ID" => $USER->GetID());
-		$arParams["SELECT"] = array("UF_EMPLOYER");
-		$arRes = CUser::GetList($by,$order,$arFilter,$arParams);
-		$arRes = $arRes->Fetch();
+	public function SetFilterParams($UF_EMPLOYER) {
 		$FilterParams = array (
 			"IBLOCK_TYPE" => $this->arParams["IBLOCK_TYPE"],
 			"IBLOCK_ID" => $this->arParams["IBLOCK_ID"],
-			"PROPERTY_ID_EMPLOYER" => $arRes["UF_EMPLOYER"]
+			"PROPERTY_ID_EMPLOYER" => $UF_EMPLOYER
 		);
+		
+		if (isset($this->arParams["F_VACANCY"]) && is_numeric($this->arParams["F_VACANCY"])) {
+			$FilterParams = array_merge($FilterParams, array("PROPERTY_ID_VACANCY" => $this->arParams["F_VACANCY"]));
+		}
+		if (isset($this->arParams["F_USER"]) && is_numeric($this->arParams["F_USER"])) {
+			$FilterParams = array_merge($FilterParams, array("PROPERTY_ID_USER" => $this->arParams["F_USER"]));
+		}
+		if (!empty($this->arParams["F_DATE_START"])) {
+			$date_start = new DateTime($this->arParams["F_DATE_START"]);
+			$date_start = date('d.m.Y H:i:s', $date_start->getTimestamp());
+			$FilterParams = array_merge($FilterParams, array(">=DATE_CREATE" => $date_start));
+		}
+		if (!empty($this->arParams["F_DATE_END"])) {
+			$date_end = new DateTime($this->arParams["F_DATE_END"]);
+			$date_end = date('d.m.Y H:i:s', $date_end->getTimestamp());
+			$FilterParams = array_merge($FilterParams, array("<=DATE_CREATE" => $date_end));
+		}
+		
 		return $FilterParams;
 	}
 }

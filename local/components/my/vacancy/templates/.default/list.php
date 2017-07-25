@@ -14,6 +14,13 @@ $APPLICATION->IncludeComponent(
 		"SORT_ORDER1" => $arParams["SORT_ORDER1"],
 		"SORT_ORDER2" => $arParams["SORT_ORDER2"],
 		"FOR_EMPLOYER" => $arParams["FOR_EMPLOYER"],
+		"F_ACTIVE" => $arParams["F_ACTIVE"],
+		"F_RESPONSE" => $arParams["F_RESPONSE"],
+		"F_DATE_START" => $arParams["F_DATE_START"],
+		"F_DATE_END" => $arParams["F_DATE_END"],
+		"F_EMPLOYER" => $arParams["F_EMPLOYER"],
+		"F_SALARY_START" => $arParams["F_SALARY_START"],
+		"F_SALARY_END" => $arParams["F_SALARY_END"],
     )
 );
 ?>

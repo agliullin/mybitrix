@@ -32,7 +32,7 @@ $APPLICATION->SetTitle(" ");
 		),
 		"SEF_FOLDER" => "../vacancy/",
 		"SEF_MODE" => "Y",
-		"SORT_BY1" => "ACTIVE_FROM",
+		"SORT_BY1" => "DATE_CREATE",
 		"SORT_BY2" => "NAME",
 		"SORT_ORDER1" => "DESC",
 		"SORT_ORDER2" => "ASC",
@@ -43,6 +43,10 @@ $APPLICATION->SetTitle(" ");
 		"DETAIL_PAGE_URL" => "../vacancy/#ELEMENT_ID#/",
         "LIST_PAGE_URL" => "../vacancy/",
 		"FOR_EMPLOYER" => "Y",
+		"F_ACTIVE" => $_POST["f_active"],
+		"F_RESPONSE" => $_POST["f_response"],
+		"F_DATE_START" => $_POST["f_date_start"],
+		"F_DATE_END" => $_POST["f_date_end"],
 	),
 	false
 );?>

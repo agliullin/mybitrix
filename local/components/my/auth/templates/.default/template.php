@@ -1,7 +1,8 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
-<?if($arResult["AUTH"] == false):?>
-<?php if ($arResult["ERROR"] != null) {
+<?if($arResult["AUTH"] == false) {?>
+<?php 
+if ($arResult["ERROR"] != null) {
 	echo $arResult["ERROR"];
 } ?>
 <div class="panel panel-success">
@@ -38,7 +39,7 @@
 </div>
 
 <?
-else:
+} else {
 ?>
 
 <div class="panel panel-success">
@@ -69,4 +70,5 @@ else:
 </div>
 
 
-<?endif?>
+<?
+}?>

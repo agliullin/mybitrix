@@ -32,7 +32,7 @@ $APPLICATION->SetTitle("Вакансии");
 					),
 					"SEF_FOLDER" => "/vacancy/",
 					"SEF_MODE" => "Y",
-					"SORT_BY1" => "ACTIVE_FROM",
+					"SORT_BY1" => "DATE_CREATE",
 					"SORT_BY2" => "NAME",
 					"SORT_ORDER1" => "DESC",
 					"SORT_ORDER2" => "ASC",
@@ -43,6 +43,9 @@ $APPLICATION->SetTitle("Вакансии");
 					"DETAIL_PAGE_URL" => "/vacancy/#ELEMENT_ID#/",
 					"LIST_PAGE_URL" => "/vacancy/",
 					"FOR_EMPLOYER" => "N",
+					"F_EMPLOYER" => $_POST["f_employer"],
+					"F_SALARY_START" => $_POST["f_salary_start"],
+					"F_SALARY_END" => $_POST["f_salary_end"],
 				),
 				false
 			);?>
