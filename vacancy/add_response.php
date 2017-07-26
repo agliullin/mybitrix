@@ -24,14 +24,14 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 		$iblock_id = 22;
 		$section_id = false;
 		
-		$arFields = Array(
+		$Fields = Array(
 			"NAME" => "Отклик пользователя с ID " . $_POST['id_user'] . " на вакансию с ID " . $_POST['id_vacancy'],
 			"IBLOCK_ID"      => $iblock_id,
 			"PROPERTY_VALUES"=> $PROPERTIES,
 			"ACTIVE"         => "Y", 
 		);
 
-		if($ID = $el->Add($arFields)) {
+		if($ID = $el->Add($Fields)) {
 			$result = '{"status":"success","info":"Отклик успешно добавлен"}';
 		} else {
 			$result = '{"status":"error","info":"' . $el->LAST_ERROR . '"}';
