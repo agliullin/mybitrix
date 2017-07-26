@@ -3,7 +3,7 @@
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)
 	die();
 global $USER;
-if($USER->IsAuthorized()): {
+if($USER->IsAuthorized()) {
 	$arResult["NAME"] = $USER->GetParam("NAME");
 	$arResult["LOGIN"] = $USER->GetParam("LOGIN");
 	$arResult["EMAIL"] = $USER->GetParam("EMAIL");
@@ -22,13 +22,13 @@ if($USER->IsAuthorized()): {
 	}
 	
 	$arResult["AUTH"] = true;
-	if (!empty($_POST)): {
+	if (!empty($_POST)) {
 		if (isset($_POST["LOG_OUT"])) { 
 			$USER->Logout();
 			LocalRedirect("index.php");
 		}
-	} endif;
-} else: {
+	}
+} else {
 	$arResult["AUTH"] = false;
 	$arResult["ERROR"] = null;
 	$arRequestParams = array(
@@ -38,7 +38,7 @@ if($USER->IsAuthorized()): {
 	$arParams["REGISTER_URL"] = ($arParams["REGISTER_URL"] <> ''? $arParams["REGISTER_URL"] : $currentUrl);
 	$arResult["REGISTER_URL"] = ($custom_reg_page <> ''? $custom_reg_page : $arParams["REGISTER_URL"]);
 
-	if (!empty($_POST)): {
+	if (!empty($_POST)) {
 		$paramSet = true;
 		foreach ($arRequestParams as $param)
 		{
@@ -48,18 +48,18 @@ if($USER->IsAuthorized()): {
 				$paramSet = false;
 			}
 		}
-		if ($paramSet): {
+		if ($paramSet) {
 			$arAuthResult = $USER->Login($arFields["LOGIN"], $arFields["PASSWORD"]);
-			if ($arAuthResult === true): {
+			if ($arAuthResult === true) {
 				LocalRedirect("index.php");
-			} else: {
+			} else {
 				ShowMessage($arAuthResult);
-			} endif;
-		}  else: {
+			}
+		}  else {
 			$arResult["ERROR"] = "Ошибка авторизации.";
-		} endif;
-	} endif;
-} endif;
+		}
+	} 
+}
 
 
 $this->IncludeComponentTemplate();

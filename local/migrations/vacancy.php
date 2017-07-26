@@ -28,7 +28,7 @@ function GetGroupByCode ($code) {
 
 /* Создание группы "Администраторы вакансий" */
 $Group_Code = "vacancy_administrator";
-if ($Group_Vacancy_Adm = GetGroupByCode($Group_Code) === false) : {
+if ($Group_Vacancy_Adm = GetGroupByCode($Group_Code) === false) {
 	$Group_Vacancy_Adm = new CGroup;
 	$arFields = Array(
 	  "ACTIVE"       => "Y",
@@ -41,9 +41,9 @@ if ($Group_Vacancy_Adm = GetGroupByCode($Group_Code) === false) : {
 	if (strlen($Group_Vacancy_Adm->LAST_ERROR) > 0) {
 		ShowError($Group_Vacancy_Adm->LAST_ERROR);
 	}
-} else: {
+} else {
 	$Group_Vacancy_Adm_ID = $Group_Vacancy_Adm["ID"];
-} endif;
+}
 
 /* Создание/обновление типа ИБ "Работодатели" */
 $arFields = Array(
