@@ -15,8 +15,7 @@ $arComponentVariables = array("ELEMENT_ID");
 $SEF_FOLDER = "";
 $arUrlTemplates = array();
 
-if ($arParams["SEF_MODE"] == "Y")
-{
+if ($arParams["SEF_MODE"] == "Y") {
 	$arVariables = array();
 
     $arUrlTemplates = CComponentEngine::MakeComponentUrlTemplates($arDefaultUrlTemplates404, $arParams["SEF_URL_TEMPLATES"]);
@@ -30,9 +29,7 @@ if ($arParams["SEF_MODE"] == "Y")
 	CComponentEngine::InitComponentVariables($componentPage, $arComponentVariables, $arVariableAliases, $arVariables);
 
 	$SEF_FOLDER = $arParams["SEF_FOLDER"];
-}
-else
-{
+} else {
 	$arVariables = array();
 
     $arVariableAliases = CComponentEngine::MakeComponentVariableAliases($arDefaultVariableAliases, $arParams["VARIABLE_ALIASES"]);

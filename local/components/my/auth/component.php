@@ -58,7 +58,7 @@ if($USER->IsAuthorized()) {
 		}  else {
 			$arResult["ERROR"] = "Ошибка авторизации.";
 		}
-	}
+	} 
 }
 
 
