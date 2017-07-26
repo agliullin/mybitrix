@@ -38,7 +38,7 @@ if($USER->IsAuthorized()) {
 	$arParams["REGISTER_URL"] = ($arParams["REGISTER_URL"] <> ''? $arParams["REGISTER_URL"] : $currentUrl);
 	$arResult["REGISTER_URL"] = ($custom_reg_page <> ''? $custom_reg_page : $arParams["REGISTER_URL"]);
 
-	if (!empty($_POST)) {
+	if (!empty($_POST["LOGIN"]) && !empty($_POST["PASSWORD"])) {
 		$paramSet = true;
 		foreach ($arRequestParams as $param)
 		{
