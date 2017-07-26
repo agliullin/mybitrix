@@ -34,10 +34,8 @@ $(function() {
 									$(".info").removeClass("error");
 									$(".info").addClass("success");
 									$(".info").html(tmp.info);
-									$(".response").removeClass("btn-primary");
-									$(".response").addClass("disabled");
-									$(".response").addClass("btn-danger");
-									$(".response").html("Вы уже откликнулись на вакансию");
+									$(".response").remove();
+									$(".disabled").removeClass("hide");
 									$('#add-response-form')[0].reset();
 								} else {
 									$(".info").removeClass("hide");
@@ -102,6 +100,7 @@ $(function() {
 			} else {		
 		?>
 			<p><button class="btn btn-primary btn-md response">Откликнуться на вакансию</button></p>
+			<p><button class="btn btn-danger btn-md disabled hide">Вы уже откликнулись на вакансию</button></p>
 			<div id="dialog" title="Отклик">
 				<form id="add-response-form" enctype="multipart/form-data">
 					<p>
