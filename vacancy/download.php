@@ -31,24 +31,23 @@ function RussianWordsToTranslit($string)
 }
 ?>
 <?
-	if(isset($_GET['file'])){
+	if(isset($_GET['file'])) {
 		if(is_numeric($_GET['file'])) {
-			$F_ID=$_GET['file'];
+			$F_ID = $_GET['file'];
 			$rsFile = CFile::GetByID($F_ID);
 			$arFile = $rsFile->Fetch();
 			$fName = $arFile["ORIGINAL_NAME"];
 			
 			$fName=RussianWordsToTranslit($fName);
 			
-			$c_Type=$arFile["CONTENT_TYPE"];
+			$c_Type = $arFile["CONTENT_TYPE"];
 			
 			$file = CFile::GetPath($F_ID);
-			$file=$_SERVER['DOCUMENT_ROOT'].$file;
+			$file = $_SERVER['DOCUMENT_ROOT'].$file;
 			
-			if(!file_exists($file))
+			if(!file_exists($file)) {
 			 	echo "Ошибка: файл не найден.";
-			else
-			{
+			} else {
 				header("Cache-Control: public");
 				header("Content-Description: File Transfer");
 				header("Content-Disposition: attachment; filename=".$fName);
@@ -58,8 +57,10 @@ function RussianWordsToTranslit($string)
 				flush();
 				echo file_get_contents($file);
 			}
+		} else {
+			echo "Ошибка: файл не найден";
 		}
-		else echo "Ошибка: файл не найден";
+	} else {
+		echo "Ошибка: Не указан ID файла";
 	}
-	else echo "Ошибка: Не указан ID файла";
 ?>

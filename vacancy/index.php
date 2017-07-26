@@ -51,4 +51,5 @@ $APPLICATION->SetTitle("Вакансии");
 			);?>
 		</div>
 	</div>
-</div><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+</div>
+<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
