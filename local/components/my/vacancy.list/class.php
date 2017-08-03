@@ -2,11 +2,10 @@
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) 
 	die();
 
-class VList extends CBitrixComponent
+class VacancyList extends CBitrixComponent
 {
     public function executeComponent()
     {
-		
 		if ($this->arParams["FOR_EMPLOYER"] == "Y") {
 			global $USER;
 			$UserGroups = $USER->GetUserGroupArray();
@@ -19,60 +18,31 @@ class VList extends CBitrixComponent
 			$this->arResult["SHOW"] = "Y";
 		}
 		
-		CModule::IncludeModule("iblock");
-		$NavParams = VList::SetNavParams();
-		
-		$SelectParams = VList::SetSelectParams();
-		
-		$OrderParams = VList::SetOrderParams();
-		
-		$FilterParams = VList::SetFilterParams();
-		
-		$Vacancies = CIBlockElement::GetList($OrderParams, $FilterParams, false, $NavParams, $SelectParams);
-		$Vacancies->SetUrlTemplates($this->arParams["DETAIL_PAGE_URL"], "", $this->arParams["LIST_PAGE_URL"]);
-		while($Vacancy = $Vacancies->GetNextElement()) {
-			$Item = $Vacancy->GetFields();
-			$ResponseFilterCount = array("PROPERTY_ID_VACANCY" => $Item["ID"]);
-			$ResponseSelectCount = array("PROPERTY_ID_VACANCY", "PROPERTY_ID_USER", "PROPERTY_ID_EMPLOYER");
-			$ResponseCount = CIBlockElement::GetList(array(),$ResponseFilterCount,array(),false,$ResponseSelectCount);
-			$Item["RESPONSE_COUNT"] = $ResponseCount;
-			$order = array('id' => 'asc');
-			$EmployerFilter = array(
+		if (\Bitrix\Main\Loader::IncludeModule("job")) {
+			$JobVacancy = new JobVacancy();
+			$NavParams = $this->SetNavParams();
+			$SelectParams = $this->SetSelectParams();
+			$OrderParams = $this->SetOrderParams();
+			$FilterParams = $this->SetFilterParams();
+			$DetailPageUrl = $this->arParams["DETAIL_PAGE_URL"];
+			$ListPageUrl = $this->arParams["LIST_PAGE_URL"];
+			$Vacancies = $JobVacancy->GetVacancyList($OrderParams, $FilterParams, false, $NavParams, $SelectParams, $DetailPageUrl, $ListPageUrl);
+			$this->arResult = $JobVacancy->GetVacanciesFields($Vacancies);
+			$this->arResult["FOR_EMPLOYER"] = $this->arParams["FOR_EMPLOYER"];
+			
+			$JobEmployer = new JobEmployer();
+			$EmployerListOrder = array('id' => 'asc');
+			$EmployerListFilter = array(
 				"IBLOCK_TYPE" => "employer",
 				"IBLOCK_ID" => 2,
-				"ID" => $Item["PROPERTY_EMPLOYER_VALUE"]
 			);
-			$EmployerSelect = array(
+			$EmployerListSelect = array(
 				"ID",
 				"NAME"
 			);
-			$EmployerArray = CIBlockElement::GetList($order, $EmployerFilter, false, false, $EmployerSelect);
-			$Item["EMPLOYER_INFO"] = $EmployerArray->GetNext();
-			
-			$this->arResult["ITEMS"][] = $Item;
-            $this->arResult["ELEMENTS"][] = $Item["ID"];
-		}
-		
-		$this->arResult["FOR_EMPLOYER"] = $this->arParams["FOR_EMPLOYER"];
-		// СПИСОК РАБОТОДАТЕЛЕЙ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА
-		$order = array('id' => 'asc');
-		$EArrayFilter = array(
-			"IBLOCK_TYPE" => "employer",
-			"IBLOCK_ID" => 2,
-		);
-		$EArraySelect = array(
-			"ID",
-			"NAME"
-		);
-		$EArrayForFilter = CIBlockElement::GetList($order, $EArrayFilter, false, false, $EArraySelect);
-		$this->arResult["EArrayForFilter"] = $EArrayForFilter;
-		
-		$this->arResult["NAV_STRING"] = $Vacancies->GetPageNavStringEx(
-            $navComponentObject,
-            "",
-            "",
-            "Y"
-        );
+			$this->arResult["EMPLOYER_LIST_FF"] = $JobEmployer->GetEmployerList($EmployerListOrder, $EmployerListFilter, false, false, $EmployerListSelect);
+        }
+
 		$this->IncludeComponentTemplate();
 		
     }
@@ -107,21 +77,17 @@ class VList extends CBitrixComponent
 	public function SetFilterParams() {
 		$FilterParams = array();
 		
-		if (isset($this->arParams["F_EMPLOYER"]) && is_numeric($this->arParams["F_EMPLOYER"])) {
+		if (!empty($this->arParams["F_EMPLOYER"]) && is_numeric($this->arParams["F_EMPLOYER"])) {
 			$FilterParams = array_merge($FilterParams, array("PROPERTY_EMPLOYER" => $this->arParams["F_EMPLOYER"]));
 		}
-		if (isset($this->arParams["F_SALARY_START"])) {
+		if (!empty($this->arParams["F_SALARY_START"])) {
 			$FilterParams = array_merge($FilterParams, array(">=PROPERTY_SALARY_UP_TO" => $this->arParams["F_SALARY_START"]));
 		}
-		if (isset($this->arParams["F_SALARY_END"])) {
+		if (!empty($this->arParams["F_SALARY_END"])) {
 			$FilterParams = array_merge($FilterParams, array("<=PROPERTY_SALARY_FROM" => $this->arParams["F_SALARY_END"]));
 		}
-		
-		if (isset($this->arParams["F_ACTIVE"]) && ($this->arParams["F_ACTIVE"] == "Y" || $this->arParams["F_ACTIVE"] == "N")) {
+		if (!empty($this->arParams["F_ACTIVE"]) && ($this->arParams["F_ACTIVE"] == "Y" || $this->arParams["F_ACTIVE"] == "N")) {
 			$FilterParams = array_merge($FilterParams, array("ACTIVE" => $this->arParams["F_ACTIVE"]));
-		}
-		if (isset($this->arParams["F_RESPONSE"]) && ($this->arParams["F_RESPONSE"] == "Y" || $this->arParams["F_RESPONSE"] == "N")) {
-			$FilterParams = array_merge($FilterParams, array("ACTIVE" => $this->arParams["F_RESPONSE"]));
 		}
 		if (!empty($this->arParams["F_DATE_START"])) {
 			$date_start = new DateTime($this->arParams["F_DATE_START"]);

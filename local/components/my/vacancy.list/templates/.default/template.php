@@ -66,7 +66,7 @@ if ($arResult["SHOW"] == "N") {
 					<select name="f_employer" class="f_employer" />
 						<option value=''>Выберите работодателя</option>
 						<?	
-						while($EmployerArray = $arResult["EArrayForFilter"]->GetNext()) {
+						while($EmployerArray = $arResult["EMPLOYER_LIST_FF"]->GetNext()) {
 						?>
 						<option <?php if (isset($_POST["f_employer"]) && $_POST["f_employer"] == $EmployerArray["ID"]) echo "selected"; ?> value='<?=$EmployerArray["ID"];?>'><?=$EmployerArray['NAME']?></option>
 						<?
