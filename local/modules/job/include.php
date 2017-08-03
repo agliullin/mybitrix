@@ -1,14 +1,12 @@
 <?php
-if(!CModule::IncludeModule('iblock'))
-	return false;
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
+	die();
 
-IncludeModuleLangFile(__FILE__);
+CModule::IncludeModule('job');
+CModule::AddAutoloadClasses('job', array(
+    'JobVacancy' => '/lib/vacancy.php',
+    'JobEmployer' => '/lib/employer.php',
+    'JobResponse' => '/lib/response.php',
+));
 
-CModule::AddAutoloadClasses(
-	'job',
-	array(
-		'JobVacancy' => 'lib/vacancy.php',
-		'JobEmployer'  => 'lib/employer.php',
-	)
-);
 ?>
