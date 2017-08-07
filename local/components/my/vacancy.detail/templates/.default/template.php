@@ -105,7 +105,7 @@ $(function() {
 				<form id="add-response-form" enctype="multipart/form-data">
 					<p>
 						<label>Сопроводительное письмо:</label>
-						<textarea class="message" name="message" rows="5"></textarea>
+						<textarea data-validation="length alphanumeric" data-validation-length="max2000" class="message" name="message" rows="5"></textarea>
 					</p>
 					<p>
 						<label>Желаемая зарплата: </label><br>
