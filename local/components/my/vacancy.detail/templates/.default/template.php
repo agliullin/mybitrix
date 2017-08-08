@@ -93,6 +93,7 @@ $(function() {
         <p><?=$arResult["ITEM"]["PROPERTIES"]["specialization"]["NAME"]?>: <?=$arResult["ITEM"]["PROPERTIES"]["specialization"]["VALUE"]?></p>
         <p><?=$arResult["ITEM"]["PROPERTIES"]["employer"]["NAME"]?>: <?=$arResult["ITEM"]["PROPERTIES"]["employer"]["DETAIL"]["NAME"]?></p>
 		<p><?=$arResult["ITEM"]["PROPERTIES"]["task"]["NAME"]?>: <a href="../download.php?file=<?=$arResult["ITEM"]['PROPERTIES']['task']['VALUE']?>">Скачать</a></p>
+		<p><?=$arResult["ITEM"]["PROPERTIES"]["tags"]["NAME"]?>: <?=$arResult["ITEM"]['PROPERTIES']['tags']['VALUE']?></p>
 		<?php if ($USER->IsAuthorized()) { 
 			if ($arResult["ITEM"]["PROPERTIES"]["response"]) { ?>
 			<p><button class="btn btn-danger btn-md disabled">Вы уже откликнулись на вакансию</button></p>
