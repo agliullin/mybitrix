@@ -47,6 +47,7 @@ $APPLICATION->SetTitle(" ");
 					"F_RESPONSE" => $_POST["f_response"],
 					"F_DATE_START" => $_POST["f_date_start"],
 					"F_DATE_END" => $_POST["f_date_end"],
+					"F_TAGS" => $_POST["f_tags"],
 				),
 				false
 			);?>

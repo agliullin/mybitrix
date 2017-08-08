@@ -51,6 +51,9 @@ if ($arResult["SHOW"] == "N") {
 				</select><br><br>
 				<label>Дата создания</label><br>
 				<input type="date" value="<?=$_POST["f_date_start"]?>" name="f_date_start"> - <input type="date" value="<?=$_POST["f_date_end"]?>" name="f_date_end"><br><br>
+				<label>Теги</label><br>
+				<input type="text" size="50" value="<?=$_POST["f_tags"]?>" name="f_tags"><br><br>
+				
 				<button class="btn btn-primary" type="submit">Применить</button>
 			</form>
 			</p>
@@ -122,7 +125,8 @@ if ($arResult["SHOW"] == "N") {
 				<b>Дата создания</b>: <?=$arItem["DATE_CREATE"]?></br>
 				<b>Работодатель</b>: <?=$arItem["EMPLOYER_INFO"]["NAME"]?></br>
 				<b>Специализация</b>: <?=$arItem["PROPERTY_SPECIALIZATION_VALUE"]?></br>
-				<b>Зарплата</b>: <?=$arItem["PROPERTY_SALARY_FROM_VALUE"]?> - <?=$arItem["PROPERTY_SALARY_UP_TO_VALUE"]?>
+				<b>Зарплата</b>: <?=$arItem["PROPERTY_SALARY_FROM_VALUE"]?> - <?=$arItem["PROPERTY_SALARY_UP_TO_VALUE"]?></br>
+				<b>Теги</b>: <?=$arItem["PROPERTY_TAGS_VALUE"]?>
 				</p>
 			</div>
 			<?

@@ -62,6 +62,7 @@ class VacancyList extends CBitrixComponent
 			"ACTIVE",
 			"DATE_CREATE",
 			"PROPERTY_TASK",
+			"PROPERTY_TAGS",
 		));
 		return $SelectParams;
 	}
@@ -99,7 +100,15 @@ class VacancyList extends CBitrixComponent
 			$date_end = date('d.m.Y H:i:s', $date_end->getTimestamp());
 			$FilterParams = array_merge($FilterParams, array("<=DATE_CREATE" => $date_end));
 		}
-		
+		if (!empty($this->arParams["F_TAGS"])) {
+			$tags = explode(", ", trim($this->arParams["F_TAGS"]));
+			$strtags = "";
+			foreach($tags as $tag) {
+				$strtags .= $tag . " & ";
+			}
+			$strtags = substr($strtags , 0, -3);
+			$FilterParams = array_merge($FilterParams, array("?PROPERTY_TAGS" => $strtags));
+		}
 		if ($this->arParams["FOR_EMPLOYER"] == "Y") {
 			global $USER;
 			$arFilter = array("ID" => $USER->GetID());

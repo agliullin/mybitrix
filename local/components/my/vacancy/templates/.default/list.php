@@ -21,6 +21,7 @@ $APPLICATION->IncludeComponent(
 		"F_EMPLOYER" => $arParams["F_EMPLOYER"],
 		"F_SALARY_START" => $arParams["F_SALARY_START"],
 		"F_SALARY_END" => $arParams["F_SALARY_END"],
+		"F_TAGS" => $arParams["F_TAGS"],
     )
 );
 ?>
