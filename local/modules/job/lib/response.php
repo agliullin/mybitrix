@@ -1,9 +1,6 @@
 <?php
 
-use Bitrix\Main\Entity;
-use Bitrix\Main\Type;
-
-class JobResponse extends Entity\DataManager
+class JobResponse
 {
     function __construct() {
         CModule::IncludeModule("iblock");

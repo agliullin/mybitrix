@@ -6,4 +6,5 @@ CModule::AddAutoloadClasses(
 		'VAgent' => '/local/classes/agents/VAgent.php',
 	)
 );
+\Bitrix\Main\Loader::IncludeModule("job")
 ?>
