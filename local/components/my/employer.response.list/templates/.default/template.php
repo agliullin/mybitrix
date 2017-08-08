@@ -26,7 +26,7 @@ if ($arResult["SHOW"] == "N") {
 				<select name="f_user" class="f_user" />
 					<option value=''>Выберите пользователя</option>
 					<?	
-					while($UserArray = $arResult["UArrayForFilter"]->GetNext()) {
+					while($UserArray = $arResult["USER_LIST_FF"]->GetNext()) {
 					?>
 					<option <?php if (isset($_POST["f_user"]) && $_POST["f_user"] == $UserArray["ID"]) echo "selected"; ?> value='<?=$UserArray["ID"];?>'><?=$UserArray['NAME']?> <?=$UserArray['LAST_NAME']?></option>
 					<?
@@ -37,7 +37,7 @@ if ($arResult["SHOW"] == "N") {
 				<select name="f_vacancy" class="f_vacancy" />
 					<option value=''>Выберите вакансию</option>
 					<?	
-					while($VacancyArray = $arResult["VArrayForFilter"]->GetNext()) {
+					while($VacancyArray = $arResult["VACANCY_LIST_FF"]->GetNext()) {
 					?>
 					<option <?php if (isset($_POST["f_vacancy"]) && $_POST["f_vacancy"] == $VacancyArray["ID"]) echo "selected"; ?> value='<?=$VacancyArray["ID"];?>'><?=$VacancyArray['NAME']?> <?=$VacancyArray['LAST_NAME']?></option>
 					<?

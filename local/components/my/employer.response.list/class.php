@@ -14,66 +14,42 @@ class RList extends CBitrixComponent
 			$this->arResult["SHOW"] = "N";
 		}
 			
-		CModule::IncludeModule("iblock");
-		$NavParams = RList::SetNavParams();
-		
-		$SelectParams = RList::SetSelectParams();
-		
-		$OrderParams = RList::SetOrderParams();
-		
-		
-		global $USER;
-		$FilterParams = array("ID" => $USER->GetID());
-		$SelectParams["SELECT"] = array("UF_EMPLOYER");
-		$GetUser = CUser::GetList($by,$order,$FilterParams,$SelectParams);
-		$GetUserArray = $GetUser->Fetch();
-		$FilterParams = RList::SetFilterParams($GetUserArray["UF_EMPLOYER"]);
-		
-		$Responses = CIBlockElement::GetList($OrderParams, $FilterParams, false, $NavParams, $SelectParams);
-		$Responses->SetUrlTemplates($this->arParams["DETAIL_PAGE_URL"], "", $this->arParams["LIST_PAGE_URL"]);
-		
-		while ($Response = $Responses->GetNextElement()) {
-			$Item = $Response->GetFields();
-			$ResponseUser = CUser::GetByID($Item["PROPERTY_ID_USER_VALUE"]);
-			$ResponseUserArray = $ResponseUser->GetNext();
-			$Item["RESPONSE_USER"] = $ResponseUserArray;
+		if (\Bitrix\Main\Loader::IncludeModule("job")) {
+			$JobResponse = new JobResponse();
+
+			$UserFilterParams = array("ID" => $USER->GetID());
+			$UserSelectParams["SELECT"] = array("UF_EMPLOYER");
+			$GetUser = CUser::GetList($by, $order, $UserFilterParams, $UserSelectParams);
+			$GetUserArray = $GetUser->Fetch();
 			
+			$FilterParams = $this->SetFilterParams($GetUserArray["UF_EMPLOYER"]);
+			$NavParams = $this->SetNavParams();
+			$SelectParams = $this->SetSelectParams();
+			$OrderParams = $this->SetOrderParams();
+			$DetailPageUrl = $this->arParams["DETAIL_PAGE_URL"];
+			$ListPageUrl = $this->arParams["LIST_PAGE_URL"];
+
+			$this->arResult = $JobResponse->GetResponseList($OrderParams, $FilterParams, false, $NavParams, $SelectParams, $DetailPageUrl, $ListPageUrl);
 			
-			$ResponseVacancyFilter = array("ID" => $Item["PROPERTY_ID_VACANCY_VALUE"]);
-			$ResponseVacancySelect = array("ID", "NAME");
-			$ResponseVacancy = CIBlockElement::GetList(array(),$ResponseVacancyFilter,false,array(),$ResponseVacancySelect);
-			$ResponseVacancyElement = $ResponseVacancy->GetNextElement();
-			$ResponseVacancyArray = $ResponseVacancyElement->GetFields();
-			$Item["RESPONSE_VACANCY"] = $ResponseVacancyArray;
+			$UserListOrder = array('id' => 'asc');
+			$UserListBy = 'sort'; 
+			$UserList = CUser::GetList($UserListOrder, $UserListBy);
+			$this->arResult["USER_LIST_FF"] = $UserList;
 			
-			$this->arResult["ITEMS"][] = $Item;
-            $this->arResult["ELEMENTS"][] = $Item["ID"];
+			$JobVacancy = new JobVacancy();
+			$VacancyListFilter = array(
+				"PROPERTY_EMPLOYER" => $GetUserArray["UF_EMPLOYER"]
+			);
+			$VacancyListSelect = array(
+				"ID",
+				"NAME"
+			);
+			$VacancyList = $JobVacancy->GetVacancyList($order, $VacancyListFilter, false, false, $VacancyListSelect, false, false);
+			$this->arResult["VACANCY_LIST_FF"] = $VacancyList;
+
+
 		}
 		
-		// СПИСОК ПОЛЬЗОВАТЕЛЕЙ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА
-		$order = array('id' => 'asc');
-		$by = 'sort'; 
-		$UArrayForFilter = CUser::GetList($order, $tmp);
-		$this->arResult["UArrayForFilter"] = $UArrayForFilter;
-		
-		// СПИСОК ВАКАНСИЙ ДЛЯ ВЫПАДАЮЩЕГО СПИСКА
-		$VArrayFilter = array(
-			"PROPERTY_EMPLOYER" => $GetUserArray["UF_EMPLOYER"]
-		);
-		$VArraySelect = array(
-			"ID",
-			"NAME"
-		);
-		$VArrayForFilter = CIBlockElement::GetList($order, $VArrayFilter, false, false, $VArraySelect);
-		$this->arResult["VArrayForFilter"] = $VArrayForFilter;
-		
-		
-		$this->arResult["NAV_STRING"] = $Responses->GetPageNavStringEx(
-            $navComponentObject,
-            "",
-            "",
-            "Y"
-        );
 		$this->IncludeComponentTemplate();
 		
     }

@@ -57,6 +57,26 @@ if ($arResult["SHOW"] == "N") {
 		</div>
 		<?php 
 		} elseif ($arResult["FOR_EMPLOYER"] == "N") {
+			$cache = new CPHPCache();
+			$cache_time = 86000;
+			$cache_id = 'EMPLOYER_LIST_FF';
+			$cache_path = '/EMPLOYER_LIST_FF/';
+			if ($cache_time > 0 && $cache->InitCache($cache_time, $cache_id, $cache_path))
+			{
+			   	$res["EMPLOYER_LIST_FF"] = $cache->GetVars();
+			   	if (is_array($res["EMPLOYER_LIST_FF"]) && (count($res["EMPLOYER_LIST_FF"]) > 0))
+			      	$arRes["EMPLOYER_LIST_FF"] = $res["EMPLOYER_LIST_FF"];
+			}
+			if (is_array($arRes["EMPLOYER_LIST_FF"]))
+			{
+			   	$arResult["EMPLOYER_LIST_FF"] = $arRes["EMPLOYER_LIST_FF"];
+			    if ($cache_time > 0)
+			    {
+		         	$cache->StartDataCache($cache_time, $cache_id, $cache_path);
+		         	$cache->EndDataCache(array("EMPLOYER_LIST_FF"=>$arResult["EMPLOYER_LIST_FF"]));
+			    }
+			}
+
 			?>
 			<div class="well">
 				<h4>Фильтрация</h4>
@@ -66,7 +86,7 @@ if ($arResult["SHOW"] == "N") {
 					<select name="f_employer" class="f_employer" />
 						<option value=''>Выберите работодателя</option>
 						<?	
-						while($EmployerArray = $arResult["EArrayForFilter"]->GetNext()) {
+						while($EmployerArray = $arResult["EMPLOYER_LIST_FF"]->GetNext()) {
 						?>
 						<option <?php if (isset($_POST["f_employer"]) && $_POST["f_employer"] == $EmployerArray["ID"]) echo "selected"; ?> value='<?=$EmployerArray["ID"];?>'><?=$EmployerArray['NAME']?></option>
 						<?

@@ -2,30 +2,28 @@
 if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true) 
 	die();
 
-class VDetail extends CBitrixComponent
+class VacancyDetail extends CBitrixComponent
 {
     public function executeComponent()
     {
-		CModule::IncludeModule("iblock");
 		
-		$VacancyCIBlockElement = CIBlockElement::GetById($this->arParams["ELEMENT_ID"]);
-		$VacancyElement = $VacancyCIBlockElement->GetNextElement();
-		$Item = $VacancyElement->GetFields();
-		$Item["PROPERTIES"] = $VacancyElement->getProperties();
-		
-		$EmployerCIBlockElement = CIBlockElement::GetById($Item["PROPERTIES"]["employer"]["VALUE"]);
-		$EmployerElement = $EmployerCIBlockElement->GetNextElement();
-		$Item["PROPERTIES"]["employer"]["DETAIL"] = $EmployerElement->GetFields();
-		
-		$FilterParams = VDetail::SetFilterParams();
-		$ResponseCIBlockElement = CIBlockElement::GetList(Array(), $FilterParams, false, false, Array());
-		if ($ResponseElement = $ResponseCIBlockElement->GetNextElement()) {
-			$Item["PROPERTIES"]["response"] = true;
-		} else {
-			$Item["PROPERTIES"]["response"] = false;
+		if (\Bitrix\Main\Loader::IncludeModule("job")) {
+			$JobVacancy = new JobVacancy();
+			$Item = $JobVacancy->GetVacancyById($this->arParams["ELEMENT_ID"]);
+			
+			$JobEmployer = new JobEmployer();
+			$Item["PROPERTIES"]["employer"]["DETAIL"] = $JobEmployer->GetEmployerById($Item["PROPERTIES"]["employer"]["VALUE"]);
+			
+			$FilterParams = $this->SetFilterParams();
+			$ResponseCIBlockElement = CIBlockElement::GetList(Array(), $FilterParams, false, false, Array());
+			if ($ResponseElement = $ResponseCIBlockElement->GetNextElement()) {
+				$Item["PROPERTIES"]["response"] = true;
+			} else {
+				$Item["PROPERTIES"]["response"] = false;
+			}
+			
+			$this->arResult["ITEM"] = $Item;
 		}
-		
-		$this->arResult["ITEM"] = $Item;
 		$this->IncludeComponentTemplate();
     
 	}

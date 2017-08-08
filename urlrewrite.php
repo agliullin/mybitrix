@@ -18,6 +18,11 @@ $arUrlRewrite = array(
 		"ID" => "my:employer.response",
 		"PATH" => "/employer/response/index.php",
 	),
+	array(
+		"CONDITION" => "#^/bitrix/admin/responses.php#",
+		"RULE" => "",
+		"PATH" => "/local/modules/job/admin/responses.php",
+	),
 );
 
 ?>

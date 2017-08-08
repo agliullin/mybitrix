@@ -279,7 +279,7 @@ $arFields = Array(
 	"NAME" => "Специализация",
 	"ACTIVE" => "Y",
 	"SORT" => "10",
-	"CODE" => "spec",
+	"CODE" => "specialization",
 	"PROPERTY_TYPE" => "S",
 	"IBLOCK_ID" => $ID,
 );
